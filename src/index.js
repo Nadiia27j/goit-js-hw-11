@@ -12,24 +12,33 @@ const refs = {
     buttonLoad: document.querySelector('.load-more'),
 }
 
-const newsApiService = NewsApiService();
+const newsApiService = new NewsApiService();
+console.log(newsApiService);
 
 refs.formEl.addEventListener('submit', onSearch);
 refs.buttonLoad.addEventListener('click', onLoadMore);
 
-let searchQuery = '';
+
 
 function onSearch(e) {
     e.preventDefault;
 
-    const searchQuery = e.currentTarget.elements.query.value;
-  
+    newsApiService.query = e.currentTarget.elements.query.value;
+    newsApiService.fetchImage();
 
-    newsApiService.fetchImage(searchQuery);
+    newsApiService.resetPage();
 
-    renderCard()
+    if(newsApiService.query === '') {
+        refs.galleryEl.innerHTML = '';
+        refs.onLoadMore.classList.add('is-hidden');
+        
+    }
+
+    renderCard(newsApiService)
 }  
 
+
+//  ф-я Завантажити більше зображень 
 
 function onLoadMore() {
     newsApiService.fetchImage(searchQuery);
