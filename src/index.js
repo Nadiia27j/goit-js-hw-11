@@ -24,25 +24,30 @@ function onSearch(e) {
     e.preventDefault;
 
     newsApiService.query = e.currentTarget.elements.query.value;
-    newsApiService.fetchImage();
-
     newsApiService.resetPage();
 
+    newsApiService.fetchImage() ;
+
+  // при новому запиті очищає галерею
+  refs.galleryEl.innerHTML = '';
+
+
     if(newsApiService.query === '') {
-        refs.galleryEl.innerHTML = '';
-        refs.onLoadMore.classList.add('is-hidden');
-        
+        return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
     }
 
-    renderCard(newsApiService)
+    renderCard(data)
 }  
 
 
 //  ф-я Завантажити більше зображень 
 
 function onLoadMore() {
-    newsApiService.fetchImage(searchQuery);
+    newsApiService.fetchImage();
+    refs.galleryEl.insertAdjacentHTML('beforeend', renderCard(data));
 }
+// при сабмітв показуємо кнопку loadmore
+refs.onLoadMore.classList.add('is-hidden');
 
 // function onError() {
 //     if (searchQuery === []) {
