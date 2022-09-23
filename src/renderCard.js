@@ -4,7 +4,7 @@ export { renderCard };
 
 
 function renderCard(data) {
-    const card = data.hits.map(({  webformatURL,
+    const card = data.map(({webformatURL,
        largeImageURL,
         tags,
         likes,
