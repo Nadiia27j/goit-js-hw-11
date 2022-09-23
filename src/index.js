@@ -14,7 +14,6 @@ const refs = {
 }
 
 const newsApiService = new NewsApiService();
-console.log(newsApiService);
 
 refs.formEl.addEventListener('submit', onSearch);
 refs.buttonLoad.addEventListener('click', onLoadMore);
@@ -24,27 +23,34 @@ refs.buttonLoad.addEventListener('click', onLoadMore);
 function onSearch(e) {
     e.preventDefault();
 
-    newsApiService.query = e.currentTarget.elements.searchQuery.value;
+    newsApiService.query = e.currentTarget.elements.searchQuery.value.trim();
+
     newsApiService.resetPage();
-    newsApiService.fetchImage();
-
-    // refs.onLoadMore.classList.add('is-hidden');
-
-  // при новому запиті очищає галерею
-  refs.galleryEl.innerHTML = '';
-
 
     if(newsApiService.query === '') {
-        return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
+        Notify.failure('Sorry, there are no images matching your search query. Please try again.')
+        refs.galleryEl.innerHTML = '';
+        refs.onLoadMore.classList.add('is-hidden');
+        return
     }
 
+    newsApiService.fetchImage().then(response => response.json).then(data => {
+        refs.galleryEl.innerHTML = '';
+        refs.onLoadMore.classList.remove('is-hidden');
+
+        if (!data.hits.length) {
+            Notify.warning("We're sorry, but you've reached the end of search results.");
+            refs.onLoadMore.classList.add('is-hidden');
+            return
+        }
+    });
+
+    renderCard(data)
     refs.galleryEl.insertAdjacentHTML('beforeend', renderCard(data));
 
-    renderCard()
+    
     onLoadMore()
 } 
-
-
 
 
 //  ф-я Завантажити більше зображень 
@@ -53,4 +59,12 @@ function onLoadMore() {
     newsApiService.fetchImage();
     refs.galleryEl.insertAdjacentHTML('beforeend', renderCard(data));
 }
+
+
+
+// нескінченний  скрол
+
+window.addEventListener('scroll', () => {
+    const documentRect = document.documentElement.getBoundingClientRect();
+});
 

@@ -11,7 +11,6 @@ export default class NewsApiService {
     }
 
     async  fetchImage() {
-        console.log(this);
         const options = {
             method: "GET",
             key: '30077711-4b113b89ab0e54a97a0c4d035',
@@ -22,10 +21,9 @@ export default class NewsApiService {
     
         try {
             const response = await axios.get(`https://pixabay.com/api/?q=${this.searchQuery}&per_page=40&page=${this.page}`, options);
-            const data = response.data.hits;
-            console.log(data);
+            const data = response.data;
             this.incrementPage();
-            return data;
+            return data
 
         } catch (error) {
             console.error(error);
