@@ -9,6 +9,7 @@ export default class NewsApiService {
     async fetchImage() {
         // console.log(this);
         const options = {
+            method: "GET",
             key: '30077711-4b113b89ab0e54a97a0c4d035',
             image_type: photo,
             orientation: horizontal,
