@@ -38,7 +38,7 @@ function onSearch(e) {
         return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
     }
 
-    refs.galleryEl.insertAdjacentHTML('beforeend', renderCard());
+    refs.galleryEl.insertAdjacentHTML('beforeend', renderCard(data.hits));
 
     renderCard()
     onLoadMore()

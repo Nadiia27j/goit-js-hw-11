@@ -3,9 +3,9 @@ export { renderCard };
 
 
 
-function renderCard() {
-    const card = images.map(({  webformatURL,
-        largeImageURL,
+function renderCard(data) {
+    const card = data.hits.map(({  webformatURL,
+       largeImageURL,
         tags,
         likes,
         views,
@@ -34,6 +34,7 @@ function renderCard() {
               </p>
             </div>
           </div>`
-        }).join('');
+    }).join('');
+    refs.galleryEl.insertAdjacentHTML('beforeend', renderCard(card));
 }
 
