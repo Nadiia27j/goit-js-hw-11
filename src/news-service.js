@@ -1,12 +1,15 @@
 
 import axios from 'axios';
+
+  
+
 export default class NewsApiService {
     constructor() {
        this.searchQuery = '';
        this.page = 1;
     }
 
-    async fetchImage() {
+    async  fetchImage() {
         // console.log(this);
         const options = {
             method: "GET",
@@ -14,11 +17,11 @@ export default class NewsApiService {
             image_type: photo,
             orientation: horizontal,
             safesearch: true,
-        }
+        };
     
         try {
-            const response = await axios.get(`https://pixabay.com/api&q=${this.searchQuery}&per_page=40&page=${this.page}`, options);
-            const data = response.data;
+            const response = await axios(`https://pixabay.com/api/?q=${this.searchQuery}&per_page=40&page=${this.page}`, options);
+            const data = response.data.hits;
             console.log(data);
             this.incrementPage();
             return data;
@@ -45,13 +48,3 @@ export default class NewsApiService {
     }
 
 }
-
-
-
-// return fetch(`https://pixabay.com/api?q=${this.searchQuery}&per_page=40&page=1`, options)
-        //  .then(response => {
-        //    if (response.status !== 200) {
-        //        throw new Error(response.status);;
-        //    } 
-        //    return response.json();
-        // });
