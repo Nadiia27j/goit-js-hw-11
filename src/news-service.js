@@ -1,9 +1,6 @@
 
 import axios from 'axios';
 
-
-
-
 export default class NewsApiService {
     constructor() {
        this.searchQuery = '';
@@ -20,8 +17,8 @@ export default class NewsApiService {
         };
     
         try {
-            const response = await axios.get(`https://pixabay.com/api/?q=${this.searchQuery}&per_page=40&page=${this.page}`, options);
-            const data = response.data;
+            const response = await axios(`https://pixabay.com/api/?q=${this.searchQuery}&per_page=40&page=${this.page}`, options);
+            const data = response.data.hits;
             this.incrementPage();
             return data
 

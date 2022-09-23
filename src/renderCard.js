@@ -1,8 +1,6 @@
 export { renderCard };
 
 
-
-
 function renderCard(data) {
     const card = data.map(({webformatURL,
        largeImageURL,

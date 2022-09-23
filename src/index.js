@@ -48,10 +48,8 @@ function onSearch(e) {
     renderCard(data)
     refs.galleryEl.insertAdjacentHTML('beforeend', renderCard(data));
 
-    
     onLoadMore()
 } 
-
 
 //  ф-я Завантажити більше зображень 
 
@@ -59,6 +57,18 @@ function onLoadMore() {
     newsApiService.fetchImage();
     refs.galleryEl.insertAdjacentHTML('beforeend', renderCard(data));
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
