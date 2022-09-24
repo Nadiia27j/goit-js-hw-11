@@ -8,22 +8,16 @@ export default class NewsApiService {
     }
 
     async  fetchImage() {
-        const options = {
-            method: "GET",
-            image_type: photo,
-            orientation: horizontal,
-            safesearch: true,
-
-        };
+    
+        const BASE_URL = `https://pixabay.com/api/`;
+        const API_KEY = `30077711-4b113b89ab0e54a97a0c4d035`;
     
         try {
-            const response = await axios.get(`https://pixabay.com/api/?key='30077711-4b113b89ab0e54a97a0c4d035'&q=${this.searchQuery}&per_page=40&page=${this.page}`, options);
-            console.log(response);
-          const data = response.data.hits;
-             return data;
+            const response = await axios.get(`${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`);
+            const data = response.data.hits;
             this.incrementPage();
-          
-
+            return data;
+            
         } catch (error) {
             console.error(error);
         }   
@@ -46,3 +40,4 @@ export default class NewsApiService {
     }
 
 }
+
