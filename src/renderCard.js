@@ -1,5 +1,5 @@
 export { renderCard };
-
+import refs from './index'
 
 function renderCard(data) {
     const card = data.map(({webformatURL,
@@ -8,7 +8,7 @@ function renderCard(data) {
         likes,
         views,
         comments,
-        downloads,}) => {
+        downloads,}) => { r
              `<div class="photo-card">
             <a href="${largeImageURL}">
             <img src="${webformatURL}" alt="${tags}" loading="lazy" />
@@ -33,6 +33,6 @@ function renderCard(data) {
             </div>
           </div>`
     }).join('');
-    refs.galleryEl.insertAdjacentHTML('beforeend', renderCard(card));
+    refs.galleryEl.insertAdjacentHTML('beforeend', card);
 }
 
