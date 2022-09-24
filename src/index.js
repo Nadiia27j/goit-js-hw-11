@@ -19,7 +19,6 @@ refs.formEl.addEventListener('submit', onSearch);
 refs.buttonLoad.addEventListener('click', onLoadMore);
 
 
-
 function onSearch(e) {
     e.preventDefault();
 
@@ -31,7 +30,6 @@ function onSearch(e) {
         return
     }
 
-    
     refs.galleryEl.innerHTML = '';
         
     newsApiService.fetchImage().then(response => console.log(response)).then(data);
@@ -42,9 +40,7 @@ function onSearch(e) {
         refs.onLoadMore.classList.add('is-hidden');
         return
     }
-
 } 
-
 
 //  ф-я Завантажити більше зображень 
 
@@ -85,6 +81,7 @@ function renderCard(data) {
             </div>
           </div>`
     }).join('');
+
     refs.galleryEl.insertAdjacentHTML('beforeend', card);
 }
 
