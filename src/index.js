@@ -49,7 +49,7 @@ function renderCard(data) {
         views,
         comments,
         downloads,}) => { 
-             `<div class="photo-card">
+             return`<div class="photo-card">
             <a href="${largeImageURL}">
             <img src="${webformatURL}" alt="${tags}" loading="lazy" />
             </a>
@@ -75,31 +75,32 @@ function renderCard(data) {
     }).join('');
 
     refs.galleryEl.insertAdjacentHTML('beforeend', card);
+    console.log(refs.galleryEl);
 }
 
 
-// function onLoadMore() {
-//     buttonLoad.disable();
-//    fetchImage(query)
-//    .then(response => {
-//     if(response.total === 0) {
-//         buttonLoad.hide();
-//         Notify.warning('Sorry, there are no images matching your search query. Please try again.');
-//         return;
-//     }
-//     if (r.hits.length === 0) {
-//        buttonLoad.hide();
-//         Notiflix.Notify.failure(
-//           `We're sorry, but you've reached the end of search results`
-//         );
-//         return;
-//       }
-//       renderCard(data);
-//       buttonLoad.enable()
-//    })
-//    .catch(error => console.log(error));
+function onLoadMore() {
+    buttonLoad.disable();
+   fetchImage(query)
+   .then(response => {
+    if(response.total === 0) {
+        buttonLoad.hide();
+        Notify.warning('Sorry, there are no images matching your search query. Please try again.');
+        return;
+    }
+    if (r.hits.length === 0) {
+       buttonLoad.hide();
+        Notify.failure(
+          `We're sorry, but you've reached the end of search results`
+        );
+        return;
+      }
+      renderCard(data);
+      buttonLoad.enable()
+   })
+   .catch(error => console.log(error));
 
-// }
+}
 
 
   
