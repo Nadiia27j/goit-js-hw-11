@@ -19,16 +19,17 @@ refs.buttonLoad.addEventListener('click', onLoadMore);
 
 function onSubmit(e) {
   e.preventDefault();
-
+  newsApiService.form = e.currentTarget;
   newsApiService.query = e.currentTarget.elements.searchQuery.value.trim();
+  refs.buttonLoad.classList.remove('is-hidden');
  
+  refs.galleryEl.innerHTML = '';
 
-  // якщо нічого не введено в інпут вийти з функції
   if (newsApiService.query === '') {
     Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
       );
-      // refs.buttonLoad.classList.remove('is-hidden');
+      refs.buttonLoad.classList.add('is-hidden');
     return;
   }
  
@@ -36,18 +37,15 @@ function onSubmit(e) {
   // якщо введено слово рендери розмітку на екраан,очищай інпут і роби кнопку завантажити ще, активною
   newsApiService.fetchImage().then(data => {
       renderCard(data);
-      Notify.success(`Hooray! We found ${data.total} images.`)
-      resetPage();
-      // refs.buttonLoad.classList.add('is-hidden');
-      
+      Notify.success(`Hooray! We found ${data.total} images.`);
+     
     })
-    .catch();
+    .catch()
+    .finally(() => newsApiService.form.reset());
 
  
  
 }
-
-
 
 function renderCard(img) {
   refs.galleryEl.insertAdjacentHTML('beforeend', markupGallery(img));
@@ -95,23 +93,22 @@ function markupGallery(data) {
 }
 
 function onLoadMore() {
-    incrementPage();
-    newsApiService.fetchImage().then(data => {
-      renderCard(data);
-
-   
-    if (data.hits.length === 0) {
-      // refs.buttonLoad.classList.add('is-hidden');
-        Notiflix.Notify.failure(
-          `We're sorry, but you've reached the end of search results`
-        );
-        return;
-      }
+  
+  newsApiService.fetchImage().then(data => {
+    renderCard(data);
+    newsApiService.incrementPage();
+    
+    
+  if (data === data.totalHits ) {
+     refs.buttonLoad.classList.add('is-hidden');
+     Notify.failure(
+     `We're sorry, but you've reached the end of search results`
+     );
      
-      
-   })
-   .catch(error => console.log(error));
-
+  }
+     
+  })
+  .catch(error => console.log(error));
 }
 
 
