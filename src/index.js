@@ -98,14 +98,13 @@ function onLoadMore() {
     renderCard(data);
     newsApiService.incrementPage();
     
-    
-  if (data === data.totalHits ) {
+    let totalPages = Math.ceil(data / 40);
+   if (newsApiService.page  === totalPages ) {
      refs.buttonLoad.classList.add('is-hidden');
      Notify.failure(
      `We're sorry, but you've reached the end of search results`
      );
-     
-  }
+   }
      
   })
   .catch(error => console.log(error));
