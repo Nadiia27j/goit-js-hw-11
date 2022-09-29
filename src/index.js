@@ -13,41 +13,41 @@ const refs = {
 
 const newsApiService = new NewsApiService();
 
-refs.formEl.addEventListener('submit', onSearch);
+refs.formEl.addEventListener('submit', onSubmit);
 refs.buttonLoad.addEventListener('click', onLoadMore);
 
-refs.buttonLoad.disabled = false;
 
-function onSearch(e) {
+function onSubmit(e) {
   e.preventDefault();
 
   newsApiService.query = e.currentTarget.elements.searchQuery.value.trim();
+ 
 
-
-  // якщо нічого не введено в інпут видавай повідомлення немає такого зображення
+  // якщо нічого не введено в інпут вийти з функції
   if (newsApiService.query === '') {
     Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
-    );
-    refs.galleryEl.innerHTML = '';
+      );
+      // refs.buttonLoad.classList.remove('is-hidden');
     return;
   }
  
-  // якщо введено слово рендери розмітку на екраан,очищай інпут і роби кнопку завантажити ще активною
-  newsApiService
-    .fetchImage()
-    .then(data => {
+  
+  // якщо введено слово рендери розмітку на екраан,очищай інпут і роби кнопку завантажити ще, активною
+  newsApiService.fetchImage().then(data => {
       renderCard(data);
+      Notify.success(`Hooray! We found ${data.total} images.`)
       resetPage();
-      // refs.buttonLoad.disabled = false;
+      // refs.buttonLoad.classList.add('is-hidden');
       
     })
     .catch();
-  onLoadMore()
+
+ 
  
 }
 
-onLoadMore();
+
 
 function renderCard(img) {
   refs.galleryEl.insertAdjacentHTML('beforeend', markupGallery(img));
@@ -95,32 +95,24 @@ function markupGallery(data) {
 }
 
 function onLoadMore() {
-    // buttonLoad.disabled = true;
     incrementPage();
-   fetchImage(query)
-   .then(response => {
-    if(response.total === 0) {
-        buttonLoad.hide();
-        Notify.warning('Sorry, there are no images matching your search query. Please try again.');
-        return;
-    }
-    if (r.hits.length === 0) {
-       buttonLoad.hide();
+    newsApiService.fetchImage().then(data => {
+      renderCard(data);
+
+   
+    if (data.hits.length === 0) {
+      // refs.buttonLoad.classList.add('is-hidden');
         Notiflix.Notify.failure(
           `We're sorry, but you've reached the end of search results`
         );
         return;
       }
-      renderCard(data);
-      buttonLoad.disabled = false;
+     
+      
    })
    .catch(error => console.log(error));
 
 }
-
-
-
-
 
 
 
