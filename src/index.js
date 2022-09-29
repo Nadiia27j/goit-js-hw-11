@@ -22,7 +22,7 @@ function onSubmit(e) {
   newsApiService.form = e.currentTarget;
   newsApiService.query = e.currentTarget.elements.searchQuery.value.trim();
   refs.buttonLoad.classList.remove('is-hidden');
- 
+  newsApiService.resetPage();
   refs.galleryEl.innerHTML = '';
 
   if (newsApiService.query === '') {
@@ -52,8 +52,7 @@ function renderCard(img) {
 }
 
 function markupGallery(data) {
-  return data
-    .map(
+  return data.map(
       ({
         largeImageURL,
         tags,
@@ -99,7 +98,7 @@ function onLoadMore() {
     newsApiService.incrementPage();
     
     let totalPages = Math.ceil(newsApiService.total / 40);
-   if (newsApiService.page  === totalPages) {
+   if (newsApiService.page  === totalPages ) {
      refs.buttonLoad.classList.add('is-hidden');
      Notify.failure(
      `We're sorry, but you've reached the end of search results`
