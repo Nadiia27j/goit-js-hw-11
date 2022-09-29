@@ -35,9 +35,11 @@ function onSubmit(e) {
  
   
   // якщо введено слово рендери розмітку на екраан,очищай інпут і роби кнопку завантажити ще, активною
-  newsApiService.fetchImage().then(data => {
-      renderCard(data);
-      Notify.success(`Hooray! We found ${data.total} images.`);
+  newsApiService
+    .fetchImage()
+    .then(({ hits, totalHits }) => {
+      renderCard(hits);
+      Notify.success(`Hooray! We found ${totalHits} images.`);
      
     })
     .catch()
@@ -91,27 +93,53 @@ function markupGallery(data) {
     .join('');
 }
 
-function onLoadMore() {
-  
-  newsApiService.fetchImage().then(data => {
-    renderCard(data);
-    newsApiService.incrementPage();
+// function onLoadMore() {
+//   newsApiService
+//    .fetchImage()
+//    .then(({ hits, totalHits }) => {
+//     renderCard(hits);
+
+//     // if (hits.length < 40) {
+//     //   refs.buttonLoad.classList.add('is-hidden');
+//     // }
+//     newsApiService.incrementPage();
     
-    let totalPages = Math.ceil(newsApiService.total / 40);
-   if (newsApiService.page  === totalPages ) {
-     refs.buttonLoad.classList.add('is-hidden');
-     Notify.failure(
-     `We're sorry, but you've reached the end of search results`
-     );
-   }
+//     let totalPages = Math.ceil(totalHits / 40);
+//    if (newsApiService.page  ===  totalPages ) {
+//      refs.buttonLoad.classList.add('is-hidden');
+//      Notify.failure(
+//      `We're sorry, but you've reached the end of search results`
+//      );
+//    }
      
-  })
-  .catch(error => console.log(error));
+//   })
+//   .catch(error => console.log(error));
+// }
+
+
+
+function onLoadMore() {
+  newsApiService
+    .fetchImage()
+    .then(({ hits, totalHits }) => {
+      console.log(totalHits);
+      renderCard(hits);
+      newsApiService.incrementPage();
+      console.log(newsApiService.page);
+      if (hits.length < 40) {
+        refs.buttonLoad.classList.add('is-hidden');
+      }
+      let totalPages = Math.floor(totalHits / 40);
+      console.log(totalPages);
+      if (newsApiService.page === totalPages) {
+        refs.buttonLoad.classList.add('is-hidden');
+        Notify.failure(
+          `We're sorry, but you've reached the end of search results`
+        );
+      }
+    })
+    .catch(error => console.log(error));
 }
-
-
-
-
 
 
 
