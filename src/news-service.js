@@ -19,7 +19,7 @@ export default class NewsApiService {
             // const total = response.data.totalHits;
             // console.log(total);
             console.log(data);
-            this.incrementPage();
+            // this.incrementPage();
             return response.data;
             
         } catch (error) {
